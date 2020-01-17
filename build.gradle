@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.2.3.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
+
+	id "com.jfrog.artifactory" version "4.13.0"
 }
 
 group = 'org.mharris.artifactory'
@@ -19,6 +21,7 @@ configurations {
 }
 
 repositories {
+	jcenter()
 	mavenCentral()
 	maven { url 'https://repo.spring.io/snapshot' }
 	maven { url 'https://repo.spring.io/milestone' }
@@ -34,6 +37,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	implementation 'org.jfrog.artifactory.client:artifactory-java-client-services:2.8.6'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
