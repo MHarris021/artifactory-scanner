@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ArtifactoryService {
 
-    List<Artifact> getArtifactsInRepo(String repoKey);
+    List<Artifact> getArtifactsInRepo(String repoKey) throws RepositoryNotFoundException;
 
     ArtifactStatistics getArtifactStatistics(Artifact artifact);
 

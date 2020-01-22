@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +37,7 @@ class ArtifactoryServiceTest {
     }
 
     @Test
-    void getArtifactsInRepo() {
+    void getArtifactsInRepo() throws RepositoryNotFoundException {
         Artifact artifact0 = getArtifact0();
         Artifact artifact1 = getArtifact1();
         Artifact artifact2 = getArtifact2();
@@ -51,6 +52,20 @@ class ArtifactoryServiceTest {
         List<Artifact> artifacts1 = artifactoryService.getArtifactsInRepo("jcenter-cache");
         assertThat(artifacts1).isNotEmpty();
         assertThat(artifacts1).isEqualTo(artifacts);
+    }
+
+    @Test
+    void getArtifactsInRepoBad() {
+        Artifact artifact0 = getArtifact0();
+        List<Artifact> artifacts = new ArrayList<>();
+        artifacts.add(artifact0);
+        FindArtifactRequest artifactRequest = new FindArtifactRequest("jcenter-poop");
+        when(artifactoryClient.findArtifacts(artifactRequest.generateAQL())).thenReturn(new ArtifactWrapper(new ArrayList<>()));
+
+        RepositoryNotFoundException exception = assertThrows(RepositoryNotFoundException.class, () -> {
+            artifactoryService.getArtifactsInRepo("jcenter-poop");
+        });
+
     }
 
     @Test
@@ -96,6 +111,19 @@ class ArtifactoryServiceTest {
         assertThat(composites.get(1).getDownloadCount()).isEqualTo(artifactStatistics1.getDownloadCount());
 
 
+    }
+
+    @Test
+    void getPopularArtifactsBad() throws RepositoryNotFoundException {
+
+        RepoRequest repoRequest = new RepoRequest();
+        repoRequest.setRepoKey("jcenter-poop");
+        FindArtifactRequest artifactRequest = new FindArtifactRequest(repoRequest.getRepoKey());
+        repoRequest.setLimit(2);
+        when(artifactoryClient.findArtifacts(artifactRequest.generateAQL())).thenReturn(new ArtifactWrapper(new ArrayList<>()));
+        RepositoryNotFoundException exception = assertThrows(RepositoryNotFoundException.class, () -> {
+            artifactoryService.getPopularArtifacts(repoRequest);
+        });
     }
 
     private Artifact getArtifact0() {

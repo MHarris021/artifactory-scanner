@@ -1,11 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Artifactory Repository Scanner</title>
 </head>
 <body>
 <h1>Most Popular Artifacts</h1>
-
+<table border="1">
+    <thead>
+    <tr>
+        <th>Index</th>
+        <th>Artifact Name</th>
+        <th>Artifact Path</th>
+        <th>Download Count</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--/*@thymesVar id="artifacts" type="java.util.ArrayList<org.mharris.artifactory.artifactoryscanner.models.ArtifactComposite>"*/-->
+    <tr th:each="artifact, artStat : ${artifacts}" th:style="${artStat.odd}? 'font-weight: bold;'"
+        th:alt-title="${artStat.even}? 'even' : 'odd'">
+        <td th:text="${artStat.index}"></td>
+        <!--/*@thymesVar id="artifact" type="org.mharris.artifactory.artifactoryscanner.models.ArtifactComposite"*/-->
+        <td th:text="${artifact.name}"></td>
+        <td th:text="${artifact.path}"></td>
+        <td th:text="${artifact.downloadCount}"></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

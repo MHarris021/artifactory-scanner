@@ -37,6 +37,16 @@ class ArtifactoryClientTest {
     }
 
     @Test
+    void testFindArtifactsBadRepo() {
+        RepoRequest repoRequest = new RepoRequest();
+        repoRequest.setRepoKey("jcenter-poop");
+        FindArtifactRequest artifactRequest = new FindArtifactRequest(repoRequest.getRepoKey());
+        List<Artifact> artifacts = artifactoryClient.findArtifacts(artifactRequest.generateAQL()).getArtifacts();
+        assertThat(artifacts).isNotNull();
+        LOGGER.info("Returned Artifacts: " + artifacts);
+    }
+
+    @Test
     void testGetArtifactStatistics() {
         RepoRequest repoRequest = new RepoRequest();
         repoRequest.setRepoKey("jcenter-cache");

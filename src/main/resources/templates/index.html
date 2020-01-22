@@ -11,6 +11,9 @@
     <label th:for="${#ids.next('repoKey')}"> Repository Key
         <input type="text" th:field="*{repoKey}"/>
     </label>
+    <label th:for="${#ids.next('limit')}"> Artifact Limit
+        <input type="number" th:field="*{limit}">
+    </label>
     <input type="submit" value="Submit"/>
 </form>
 </body>

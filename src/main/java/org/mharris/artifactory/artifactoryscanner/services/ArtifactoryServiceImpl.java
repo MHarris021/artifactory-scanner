@@ -25,9 +25,12 @@ public class ArtifactoryServiceImpl implements ArtifactoryService {
 
 
     @Override
-    public List<Artifact> getArtifactsInRepo(String repoKey) {
+    public List<Artifact> getArtifactsInRepo(String repoKey) throws RepositoryNotFoundException {
         FindArtifactRequest artifactRequest = new FindArtifactRequest(repoKey);
         List<Artifact> artifacts = artifactoryClient.findArtifacts(artifactRequest.generateAQL()).getArtifacts();
+        if (artifacts == null || artifacts.isEmpty()) {
+            throw new RepositoryNotFoundException("Repository: " + repoKey + " is empty or does not exist!");
+        }
         artifacts = artifacts.stream().filter(artifact -> {
             String artifactName = artifact.getName();
             return artifactName.substring(artifactName.length() - 4).equals(".jar");

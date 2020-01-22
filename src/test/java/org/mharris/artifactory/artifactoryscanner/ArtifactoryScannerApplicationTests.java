@@ -14,13 +14,14 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest()
 class ArtifactoryScannerApplicationTests {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArtifactoryScannerApplicationTests.class);
 
 	@Autowired
 	private ArtifactoryService artifactoryService;
+
 
 	@Test
 	void contextLoads() {
@@ -39,4 +40,6 @@ class ArtifactoryScannerApplicationTests {
 		LOGGER.info("Most Popular Artifact: " + compositeList.get(0));
 		LOGGER.info("Second Most Popular Artifact: " + compositeList.get(1));
 	}
+
+
 }

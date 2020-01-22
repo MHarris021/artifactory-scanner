@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -52,7 +53,7 @@ class HomeControllerTest {
 
     @Test
     void errors() throws Exception {
-        mockMvc.perform(get("/errors")).andDo(print()).andExpect(view().name("errors"));
+        mockMvc.perform(get("/error")).andDo(print()).andExpect(view().name("errors"));
     }
 
     @Test
@@ -63,8 +64,9 @@ class HomeControllerTest {
     @Test
     void requestPopularRepositoriesErrors() throws Exception, RepositoryNotFoundException {
         RepoRequest repoRequest = new RepoRequest();
-        when(artifactoryService.getPopularArtifacts(repoRequest)).thenThrow(new RepositoryNotFoundException());
-        mockMvc.perform(post("/repoRequest").param("repoRequest", repoRequest.toString())).andDo(print()).andExpect(redirectedUrl("/errors"));
+        repoRequest.setRepoKey("jcenter-poop");
+        when(artifactoryService.getPopularArtifacts(any())).thenThrow(new RepositoryNotFoundException());
+        mockMvc.perform(post("/repoRequest").param("repoRequest", String.valueOf(repoRequest))).andDo(print()).andExpect(redirectedUrl("/error"));
     }
 
     @Test
@@ -72,7 +74,7 @@ class HomeControllerTest {
         RepoRequest repoRequest1 = new RepoRequest();
         repoRequest1.setRepoKey("jcenter-cache");
         when(artifactoryService.getPopularArtifacts(repoRequest1)).thenReturn(new ArrayList<>());
-        mockMvc.perform(post("/repoRequest").param("repoRequest", repoRequest1.toString())).andDo(print()).andExpect(redirectedUrl("/results"));
+        mockMvc.perform(post("/repoRequest").param("repoRequest", String.valueOf(repoRequest1))).andDo(print()).andExpect(redirectedUrl("/results"));
 
     }
 }
