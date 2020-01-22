@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Artifactory Repository Scanner</title>
+</head>
+<body>
+<h1>Determine Most Popular Repository Artifacts</h1>
+<!--/*@thymesVar id="repoRequest" type="org.mharris.artifactory.artifactoryscanner.models.RepoRequest"*/-->
+<form action="#" method="post" th:action="@{/repoRequest}" th:object="${repoRequest}">
+    <label th:for="${#ids.next('repoKey')}"> Repository Key
+        <input type="text" th:field="*{repoKey}"/>
+    </label>
+    <input type="submit" value="Submit"/>
+</form>
+</body>
+</html>

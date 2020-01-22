@@ -1,7 +1,6 @@
 package org.mharris.artifactory.artifactoryscanner;
 
-import org.jfrog.artifactory.client.Artifactory;
-import org.jfrog.artifactory.client.ArtifactoryClientBuilder;
+import org.mharris.artifactory.artifactoryscanner.services.clients.AuthInterceptor;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class ArtifactoryScannerApplicationConfiguration {
 
     @Bean
-    public Artifactory artifactory() {
-        return ArtifactoryClientBuilder.create().setUrl("http://35.193.82.133/artifactory").build();
+    public AuthInterceptor authInterceptor() {
+        return new AuthInterceptor();
     }
 }
