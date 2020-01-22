@@ -4,8 +4,15 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 
 public class AuthInterceptor implements RequestInterceptor {
+
+    private String accessToken;
+
+    public AuthInterceptor(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
     @Override
     public void apply(RequestTemplate template) {
-        template.header("X-JFrog-Art-Api", "AKCp5e3yQyM7NhEatwD7dqTrBGQ7rBsXh8DqPTH28gQRNLkggHgDBHadFwyUDu3NSLn2CisA8");
+        template.header("X-JFrog-Art-Api", this.accessToken);
     }
 }
